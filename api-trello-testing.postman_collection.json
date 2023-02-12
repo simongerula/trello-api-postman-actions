@@ -1,0 +1,337 @@
+{
+	"info": {
+		"_postman_id": "0f34494c-984b-4df9-aeec-6b0392e71656",
+		"name": "api-trello-testing",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Find board-one",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let resBody = pm.response.json();",
+							"",
+							"for (let board in resBody) {",
+							"    if (resBody[board].name === pm.environment.get(\"boardOneName\")) {",
+							"        idBoardOne = resBody[board].id;",
+							"        pm.test(\"Check board name (board-one)\", function () {",
+							"        pm.expect(resBody[board].name).to.eql(pm.environment.get(\"boardOneName\"));",
+							"        })",
+							"        pm.environment.set(\"idBoardOne\", resBody[board].id);",
+							"    }",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://api.trello.com/1/members/me/boards?key={{key}}&token={{token}}",
+					"protocol": "https",
+					"host": [
+						"api",
+						"trello",
+						"com"
+					],
+					"path": [
+						"1",
+						"members",
+						"me",
+						"boards"
+					],
+					"query": [
+						{
+							"key": "key",
+							"value": "{{key}}"
+						},
+						{
+							"key": "token",
+							"value": "{{token}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Find column-one and column-two in board-one",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let resBody = pm.response.json();",
+							"",
+							"pm.test(\"Check there are two columns\", function () {",
+							"    pm.expect(resBody).to.have.length(2);",
+							"})",
+							"",
+							"pm.test(\"Check first column is called column-one\", function () {",
+							"    pm.expect(resBody[0].name).to.eql(pm.environment.get(\"columnOneName\"))",
+							"})",
+							"",
+							"pm.test(\"Check second column is called column-two\", function () {",
+							"    pm.expect(resBody[1].name).to.eql(pm.environment.get(\"columnTwoName\"))",
+							"})",
+							"",
+							"pm.environment.set(\"idListOne\", resBody[0].id)"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://api.trello.com/1/boards/{{idBoardOne}}/lists?key={{key}}&token={{token}}",
+					"protocol": "https",
+					"host": [
+						"api",
+						"trello",
+						"com"
+					],
+					"path": [
+						"1",
+						"boards",
+						"{{idBoardOne}}",
+						"lists"
+					],
+					"query": [
+						{
+							"key": "key",
+							"value": "{{key}}"
+						},
+						{
+							"key": "token",
+							"value": "{{token}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Find card-one and card-two in column-one",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let resBody = pm.response.json();",
+							"",
+							"pm.test(\"Check first card on top is called card-one\", function () {",
+							"    pm.expect(resBody[0]).to.deep.include({'name': pm.environment.get(\"cardOneName\")})",
+							"})",
+							"",
+							"pm.environment.set(\"idCardOne\", resBody[0].id)",
+							"",
+							"pm.test(\"Check second card is called card-two\", function () {",
+							"    pm.expect(resBody[1]).to.deep.include({'name': pm.environment.get(\"cardTwoName\")})",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://api.trello.com/1/lists/{{idListOne}}/cards?key={{key}}&token={{token}}",
+					"protocol": "https",
+					"host": [
+						"api",
+						"trello",
+						"com"
+					],
+					"path": [
+						"1",
+						"lists",
+						"{{idListOne}}",
+						"cards"
+					],
+					"query": [
+						{
+							"key": "key",
+							"value": "{{key}}"
+						},
+						{
+							"key": "token",
+							"value": "{{token}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete card-one from column-one",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let res = pm.response",
+							"",
+							"pm.test(\"Delete returns code 200\", function () {",
+							"    pm.expect(res.code).eq(200)",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "https://api.trello.com/1/cards/{{idCardOne}}?key={{key}}&token={{token}}",
+					"protocol": "https",
+					"host": [
+						"api",
+						"trello",
+						"com"
+					],
+					"path": [
+						"1",
+						"cards",
+						"{{idCardOne}}"
+					],
+					"query": [
+						{
+							"key": "key",
+							"value": "{{key}}"
+						},
+						{
+							"key": "token",
+							"value": "{{token}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Find card-one in column-one",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let resBody = pm.response.json()",
+							"",
+							"pm.test(\"Cant find card-one in column-one\", function () {",
+							"    for(let card in resBody){",
+							"    pm.expect(resBody[card]).to.not.deep.include({'id': pm.environment.get(\"idCardOne\")})",
+							"    }",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://api.trello.com/1/lists/{{idListOne}}/cards?key={{key}}&token={{token}}",
+					"protocol": "https",
+					"host": [
+						"api",
+						"trello",
+						"com"
+					],
+					"path": [
+						"1",
+						"lists",
+						"{{idListOne}}",
+						"cards"
+					],
+					"query": [
+						{
+							"key": "key",
+							"value": "{{key}}"
+						},
+						{
+							"key": "token",
+							"value": "{{token}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Post card-one on top of column-one",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let res = pm.response",
+							"",
+							"pm.test(\"Check card-one is created again\", function () {",
+							"    pm.expect(res.code).eq(200)",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "name",
+							"value": "{{cardOneName}}",
+							"type": "default"
+						},
+						{
+							"key": "pos",
+							"value": "top",
+							"type": "default"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://api.trello.com/1/cards?idList={{idListOne}}&key={{key}}&token={{token}}",
+					"protocol": "https",
+					"host": [
+						"api",
+						"trello",
+						"com"
+					],
+					"path": [
+						"1",
+						"cards"
+					],
+					"query": [
+						{
+							"key": "idList",
+							"value": "{{idListOne}}"
+						},
+						{
+							"key": "key",
+							"value": "{{key}}"
+						},
+						{
+							"key": "token",
+							"value": "{{token}}"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
