@@ -22,8 +22,8 @@ The repository is set up for continuous integration with GitHub Actions. This me
 
 #### To use this repository, you'll need to have the following:
 
-A Trello account and API key
-Postman installed on your computer
+A Trello account and API key.
+Postman installed on your computer.
 Here's how to get started:
 
 1. Clone the repository to your computer.
