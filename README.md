@@ -23,15 +23,13 @@ The repository is set up for continuous integration with GitHub Actions. This me
 #### To use this repository, you'll need to have the following:
 
 A Trello account and API key
-
 Postman installed on your computer
-
 Here's how to get started:
 
-Clone the repository to your computer.
-Import the Postman collection into Postman.
-Import the Postman environment.
-Update the environment variables with your Trello API key and any other necessary information.
-Run the requests to test the Trello API.
+1. Clone the repository to your computer.
+2. Import the Postman collection into Postman.
+3. Import the Postman environment.
+4. Update the environment variables with your Trello API key and any other necessary information.
+5. Run the requests to test the Trello API.
 
 This README was written by ChatGPT.
