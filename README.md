@@ -24,7 +24,7 @@ The repository is set up for continuous integration with GitHub Actions. This me
 
 - A Trello account and API key.
 - Postman installed on your computer.
- Here's how to get started:
+##### Here's how to get started:
 
 1. Clone the repository to your computer.
 2. Import the Postman collection into Postman.
